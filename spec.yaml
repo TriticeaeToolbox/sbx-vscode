@@ -1,0 +1,25 @@
+schemaVersion: "1"
+kind: mixin
+name: vscode
+displayName: VSCode with Claude Code
+description: Allow VSCode and the VSCode Claude Code extension
+
+commands:
+  install:
+    - command: "curl -Lo vscode.deb 'https://go.microsoft.com/fwlink/?LinkID=760868'"
+      user: "0"
+      description: "Download VSCode"
+    - command: "apt-get update && apt-get install --yes ./vscode.deb"
+      user: "0"
+      description: "Install VSCode"
+    - command: "code --extensions-dir ~/.vscode-server/extensions/ --install-extension anthropic.claude-code"
+      user: "1000"
+      description: "Install VSCode Extensions"
+
+network:
+  allowedDomains:
+    - go.microsoft.com:443
+    - vscode.download.prss.microsoft.com:443
+    - main.vscode-cdn.net:443
+    - anthropic.gallery.vsassets.io:443
+    - anthropic.gallerycdn.vsassets.io:443
