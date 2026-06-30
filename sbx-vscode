@@ -37,7 +37,7 @@ shift $((OPTIND-1))
 TEMPLATE="docker/sandbox-templates:claude-code-docker"
 
 # path to kit directory (parent dir of this script)
-KIT_DIR="$(dirname $0)/../"
+KIT_DIR="$(dirname "$(readlink -f "$0")")"
 
 # path to project workspace
 # default to current working directory, if not explicitly set
@@ -86,7 +86,7 @@ fi
 #
 # START VSCODE TUNNEL
 #
-if [ $START_TUNNEL ]; then
+if [ $START_TUNNEL == true ]; then
     echo "--> Starting VSCode Tunnel..."
-    sbx exec "$NAME" code tunnel 
+    sbx exec "$NAME" code tunnel --name "$NAME"
 fi
