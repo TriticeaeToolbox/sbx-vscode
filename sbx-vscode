@@ -2,9 +2,8 @@
 
 #
 # START A VSCODE DOCKER SANDBOX
-# ./sbx-vscode [-d] [-t] [project_directory]
+# ./sbx-vscode [-d] [project_directory]
 # -d = flag to run detached / in background (just starts the sandbox)
-# -t = flag to run detached / in background and start a tunnel
 # project_directory = path to directory that will be mounted into the sandbox
 #
 # Examples
@@ -12,29 +11,19 @@
 # ./sbx-vscode /path/to/files        start the sandbox and claude code in the specified directory
 # ./sbx-vscode -d                    start the sandbox in the current directory
 # ./sbx-vscode -d /path/to/files     start the sandbox in the specified directory
-# ./sbx-vscode -t                    start the sandbox and the VSCode tunnel in the current directory
-# ./sbx-vscode -t /path/to/files     start the sandbox and the VSCode tunnel in the specified directory
 #
 
 # Set the sbx subcommand to use (default to run, unless -d or -t)
 # Set the flag to start a tunnel (default to false, unless -t)
 CMD="run"
-START_TUNNEL=false
-while getopts "dt" opt; do
+while getopts "d" opt; do
     case $opt in
         d)
             CMD="create"
             ;;
-        t)
-            CMD="create"
-            START_TUNNEL=true
-            ;;
     esac
 done
 shift $((OPTIND-1))
-
-# name of base template to use
-TEMPLATE="docker/sandbox-templates:claude-code-docker"
 
 # path to kit directory (parent dir of this script)
 KIT_DIR="$(dirname "$(readlink -f "$0")")"
@@ -75,19 +64,9 @@ else
     # Create a new sandbox (using create or run command)
     echo "--> Starting sandbox in workspace $WS_DIR..."
     echo "    name: $NAME"
-    echo "    template: $TEMPLATE"
     echo "    kit: $KIT_DIR"
     echo "    command: $CMD"
-    echo "    tunnel: $START_TUNNEL"
 
-    sbx $CMD --name "$NAME" --template "$TEMPLATE" claude --kit "$KIT_DIR" "$WS_DIR" $ARGS
+    sbx $CMD --name "$NAME"  claude-vscode --kit "$KIT_DIR" "$WS_DIR" $ARGS
 
-fi
-
-#
-# START VSCODE TUNNEL
-#
-if [ $START_TUNNEL == true ]; then
-    echo "--> Starting VSCode Tunnel..."
-    sbx exec "$NAME" code tunnel --name "$NAME"
 fi

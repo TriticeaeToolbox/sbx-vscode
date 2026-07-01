@@ -36,16 +36,16 @@ The `sbx-vscode` helper script can be used to create a new sandbox and start a V
 To start a sandbox and a tunnel in the current working directory:
 
 ```
-sbx-vscode -t
+sbx-vscode
 ```
 
 To start a sandbox and a tunnel in a different project directory:
 
 ```
-sbx-vscode -t /path/to/project
+sbx-vscode /path/to/project
 ```
 
-After starting the tunnel, you'll see a message in the console with a link and code to grant access to the VSCode server running in the sandbox
+After starting the sandbox, you'll see a message in the console with a link and code to grant access to the VSCode server running in the sandbox
 
 ```
 *
