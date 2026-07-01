@@ -43,10 +43,11 @@ KIT_DIR="$(dirname "$(readlink -f "$0")")"
 # default to current working directory, if not explicitly set
 WS_DIR=${1:-$(pwd)}
 
-# Set sandbox name (lowercase with special chars replaced)
-NAME="claude-$(basename $WS_DIR)"
+# Set sandbox name (basename with lowercase with special chars replaced)
+NAME=$(basename "$WS_DIR")
 NAME="${NAME,,}"
 NAME="${NAME//[^[:alnum:]]/-}"
+NAME="claude-$NAME"
 
 # Get existing sandboxes
 running=$(sbx ls -q)
