@@ -5,22 +5,10 @@ displayName: VSCode with Claude Code
 description: Allow VSCode and the VSCode Claude Code extension
 
 sandbox:
-  image: "docker/sandbox-templates:claude-code-docker"
+  image: "djw64/sbx-vscode"
   aiFilename: CLAUDE.md
   entrypoint:
     run: ["code", "tunnel"]
-
-commands:
-  install:
-    - command: "curl -Lo vscode.deb 'https://go.microsoft.com/fwlink/?LinkID=760868'"
-      user: "0"
-      description: "Download VSCode"
-    - command: "apt-get update && apt-get install --yes ./vscode.deb"
-      user: "0"
-      description: "Install VSCode"
-    - command: "code --extensions-dir ~/.vscode-server/extensions/ --install-extension anthropic.claude-code"
-      user: "1000"
-      description: "Install VSCode Extensions"
 
 network:
   serviceDomains:

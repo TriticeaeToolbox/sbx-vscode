@@ -3,12 +3,12 @@
 #
 # START A VSCODE DOCKER SANDBOX
 # ./sbx-vscode [-d] [project_directory]
-# -d = flag to run detached / in background (just starts the sandbox)
+# -d = flag to run detached / in background
 # project_directory = path to directory that will be mounted into the sandbox
 #
 # Examples
-# ./sbx-vscode                       start the sandbox and claude code in the current directory
-# ./sbx-vscode /path/to/files        start the sandbox and claude code in the specified directory
+# ./sbx-vscode                       start the sandbox and the VSCode tunnel in the current directory
+# ./sbx-vscode /path/to/files        start the sandbox and the VSCode tunnel in the specified directory
 # ./sbx-vscode -d                    start the sandbox in the current directory
 # ./sbx-vscode -d /path/to/files     start the sandbox in the specified directory
 #
