@@ -27,10 +27,6 @@ You can use the `sbx-vscode` helper script to start new sandboxes and tunnels.  
 ln -s /path/to/sbx-vscode/sbx-vscode /usr/local/bin/sbx-vscode
 ```
 
-To manually use the kit (without using the helper script), either:
-- append the `--kit /path/to/sbx-vscode` argument to your `sbx run` command when creating a new sandbox
-- add the kit to an existing sandbox with `sbx kit add my-sandbox /path/to/sbx-vscode`
-
 ## Usage
 
 ### Starting a Tunnel
@@ -91,3 +87,9 @@ You can connect to the tunnel by either:
 The Claude Code extension should already be installed on the server.
 
 The first time you use Claude Code in a sandbox you'll need to login with your Claude account.
+
+### Manually Using the Kit
+
+To manually use the kit (without using the helper script), either:
+- append the `--kit /path/to/sbx-vscode` argument to your `sbx run` command when creating a new sandbox
+- add the kit to an existing sandbox with `sbx kit add my-sandbox /path/to/sbx-vscode`
