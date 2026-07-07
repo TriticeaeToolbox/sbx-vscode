@@ -1,42 +1,45 @@
-# SBX-VSCODE
-This [Docker Sandbox](https://docs.docker.com/ai/sandboxes/) [Kit](https://docs.docker.com/ai/sandboxes/customize/kits/) installs VSCode and the Claude Code extension into the Docker sandbox.
+# sbx-vscode
 
-## Use Cases
+A [Docker Sandbox](https://docs.docker.com/ai/sandboxes/) [kit](https://docs.docker.com/ai/sandboxes/customize/kits/) that puts VS Code and the Claude Code extension inside a sandbox.
 
-The main use-case for this sandbox kit is to easily create a new claude sandbox in a project directory and create a VSCode tunnel so the user can work on the project using their local VSCode installation and the VSCode Claude Code extension.
+## What it does
 
-## Requirements
+The kit runs your project in a walled-off Docker sandbox and opens a VS Code tunnel into it. You work from the VS Code on your Mac, while Claude Code runs safely inside the sandbox.
 
-- macOS host system (no `amd64` support)
-- Docker Sandbox `sbx` [installation](https://docs.docker.com/ai/sandboxes/get-started/)
-- Docker account. Sign in with `sbx login`.
-- GitHub account in order to start the tunnel.
-- Claude Code subscription (not API key access).
+## What you need
 
-## Installation
+- A Mac with Apple silicon. The image builds for `arm64` only, not `amd64`.
+- The `sbx` command. See the [get-started guide](https://docs.docker.com/ai/sandboxes/get-started/).
+- A Docker account. Sign in with `sbx login`.
+- A GitHub account, to open the tunnel.
+- A Claude subscription, not an API key.
 
-Clone the repo and run the build script.
+## Install
 
-```
+Clone the repo and build the image:
+
+```bash
+git clone https://github.com/TriticeaeToolbox/sbx-vscode
+cd sbx-vscode
 ./sbx-vscode-build
 ```
 
-Note that the Docker image is built locally. No download from registry required.
+The script builds the image on your Mac and loads it as an `sbx` template. It pulls nothing from a registry. Run it again each time you change the `Dockerfile`.
 
-## Usage
+## Use
 
-- Start the sandbox.
+- Start the sandbox and tunnel on your project:
 
   ```bash
-  ./sbx-vscode /path/to/myrepo
+  ./sbx-vscode /path/to/repo
   ```
 
-- Grant access to the VSCode server by following the link and copy the code.
+- Grant access to the server. The script prints a link and a code. Open the link and type the code:
 
   ```
   To grant access to the server, please log into https://github.com/login/device and use code ****-****
   ```
 
-- Open the VSCode IDE on your host system and the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension. Then `Connect to Tunnel ...` with your GitHub account. You should see a tunnel `claude-<myrepo>`.
+- On your Mac, open VS Code and add the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension. Sign in with the same GitHub account, then connect to the tunnel. Its name is `claude-<project>`, where `<project>` is the folder you passed, so `/path/to/repo` gives `claude-repo`.
 
-- In the Claude Code panel, sign into your Claude account.
+- Open the Claude Code panel and sign in to your Claude account.
