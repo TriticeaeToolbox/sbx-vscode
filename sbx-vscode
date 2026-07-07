@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+set -uo pipefail
 
 #
 # START A VSCODE DOCKER SANDBOX
@@ -13,17 +14,33 @@
 # ./sbx-vscode -d /path/to/files     start the sandbox in the specified directory
 #
 
-# Set the sbx subcommand to use (default to run, unless -d or -t)
-# Set the flag to start a tunnel (default to false, unless -t)
+usage() {
+	cat <<'EOF'
+Usage: sbx-vscode [-d] [-h] [project_directory]
+  -d                 create the sandbox without starting the VSCode tunnel
+  -h                 show this help and exit
+  project_directory  directory to mount into the sandbox (default: current directory)
+EOF
+}
+
+# Set the sbx subcommand to use (default to run, unless -d)
 CMD="run"
-while getopts "d" opt; do
-    case $opt in
-        d)
-            CMD="create"
-            ;;
-    esac
+while getopts "dh" opt; do
+	case $opt in
+	d)
+		CMD="create"
+		;;
+	h)
+		usage
+		exit 0
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
 done
-shift $((OPTIND-1))
+shift $((OPTIND - 1))
 
 # path to kit directory (parent dir of this script)
 KIT_DIR="$(dirname "$(readlink -f "$0")")"
@@ -45,28 +62,28 @@ running=$(sbx ls -q)
 # EXISTING SANDBOX
 #
 if printf '%s\n' "$running" | grep -Fxq "$NAME"; then
-    
-    # already created, ignore
-    if [[ $CMD == "create" ]]; then
-        echo "The sandbox $NAME is already running..."
 
-    # restart in existing sandbox
-    else
-        sbx run --name "$NAME"
-        exit 0
-    fi
+	# already created, ignore
+	if [[ $CMD == "create" ]]; then
+		echo "The sandbox $NAME already exists ..."
+
+	# restart in existing sandbox
+	else
+		sbx run --name "$NAME" --kit "$KIT_DIR"
+		exit 0
+	fi
 
 #
 # NEW SANDBOX
 #
 else
 
-    # Create a new sandbox (using create or run command)
-    echo "--> Starting sandbox in workspace $WS_DIR..."
-    echo "    name: $NAME"
-    echo "    kit: $KIT_DIR"
-    echo "    command: $CMD"
+	# Create a new sandbox (using create or run command)
+	echo "--> Starting sandbox in workspace $WS_DIR..."
+	echo "    name: $NAME"
+	echo "    kit: $KIT_DIR"
+	echo "    command: $CMD"
 
-    sbx $CMD --name "$NAME"  claude-vscode --kit "$KIT_DIR" "$WS_DIR" $ARGS
+	sbx $CMD --name "$NAME" claude-vscode --kit "$KIT_DIR" "$WS_DIR"
 
 fi

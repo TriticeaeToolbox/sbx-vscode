@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+set -e
+
+# Always operate from the kit directory so relative paths resolve
+cd "$(dirname "$(readlink -f "$0")")"
+
+# Build the image
+docker rmi -f sbx-vscode-arm64:latest 2>/dev/null || true
+docker build --platform linux/arm64 -t sbx-vscode-arm64 ./image
+# docker image ls
+
+# Save the image to tar file
+rm -f sbx-vscode-arm64.tar
+docker image save sbx-vscode-arm64 -o sbx-vscode-arm64.tar
+
+# Load the image as sbx template
+sbx template rm docker.io/library/sbx-vscode-arm64:latest 2>/dev/null || true
+sbx template load sbx-vscode-arm64.tar
+# sbx template ls

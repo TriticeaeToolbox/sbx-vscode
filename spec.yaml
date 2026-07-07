@@ -5,29 +5,20 @@ displayName: VSCode with Claude Code
 description: Allow VSCode and the VSCode Claude Code extension
 
 sandbox:
-  image: "djw64/sbx-vscode"
+  image: "docker.io/library/sbx-vscode-arm64:latest"
   aiFilename: CLAUDE.md
   entrypoint:
     run: ["code", "tunnel"]
 
 network:
-  serviceDomains:
-    api.anthropic.com: anthropic
-    console.anthropic.com: anthropic
-  serviceAuth:
-    anthropic:
-      headerName: x-api-key
-      valueFormat: "%s"
   allowedDomains:
     - "claude.com:443"
+    - "claude.ai:443"
+    - "platform.claude.com:443"
+    - "downloads.claude.ai:443"
+    - "api.anthropic.com:443"
     - "go.microsoft.com:443"
     - "vscode.download.prss.microsoft.com:443"
     - "main.vscode-cdn.net:443"
     - "anthropic.gallery.vsassets.io:443"
     - "anthropic.gallerycdn.vsassets.io:443"
-
-credentials:
-  sources:
-    anthropic:
-      env:
-        - ANTHROPIC_API_KEY
