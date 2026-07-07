@@ -19,7 +19,7 @@ The kit runs your project in a walled-off Docker sandbox and opens a VS Code tun
 Clone the repo and build the image:
 
 ```bash
-git clone https://github.com/TriticeaeToolbox/sbx-vscode
+git clone https://github.com/lars20070/sbx-vscode
 cd sbx-vscode
 ./sbx-vscode-build
 ```
@@ -40,6 +40,6 @@ The script builds the image on your Mac and loads it as an `sbx` template. It pu
   To grant access to the server, please log into https://github.com/login/device and use code ****-****
   ```
 
-- On your Mac, open VS Code and add the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension. Sign in with the same GitHub account, then connect to the tunnel. Its name is `claude-<project>`, where `<project>` is the folder you passed, so `/path/to/repo` gives `claude-repo`.
+- On your Mac, open VS Code and add the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension. Sign in with the same GitHub account, then connect to the tunnel. Its name is `claude-<project>`, where `<project>` is the folder you passed, so `/path/to/repo` gives `claude-repo` as tunnel name.
 
 - Open the Claude Code panel and sign in to your Claude account.
