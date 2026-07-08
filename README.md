@@ -43,3 +43,11 @@ The script builds the image on your Mac and loads it as an `sbx` template. It pu
 - On your Mac, open VS Code and add the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension. Sign in with the same GitHub account, then connect to the tunnel. The tunnel is named `claude-<project>` — for example, `/path/to/repo` becomes `claude-repo`.
 
 - Open the Claude Code panel and sign in to your Claude account.
+
+- Push to GitHub from inside the sandbox. The sandbox blocks SSH (port 22), so the image routes GitHub over HTTPS ([image/Dockerfile](image/Dockerfile)). Give the sandbox a token once, on your Mac:
+
+  ```bash
+  sbx secret set -g github -t "$(gh auth token)"
+  ```
+
+  This needs `gh` installed and signed in (`gh auth login`). Public repositories fetch anonymously; you need the token only to push. It lets the sandbox push to every repository the token can reach, so for untrusted code use a token limited to specific repositories.
