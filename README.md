@@ -4,7 +4,7 @@ A [Docker Sandbox](https://docs.docker.com/ai/sandboxes/) [kit](https://docs.doc
 
 ## What it does
 
-The kit runs your project in a walled-off Docker sandbox and opens a VS Code tunnel into it. You work from the VS Code on your Mac, while Claude Code runs safely inside the sandbox.
+The kit runs your project in a walled-off Docker sandbox and opens a VS Code tunnel into it. You work in VS Code on your Mac, while Claude Code runs safely inside the sandbox.
 
 ## What you need
 
@@ -12,19 +12,26 @@ The kit runs your project in a walled-off Docker sandbox and opens a VS Code tun
 - The `sbx` command. See the [get-started guide](https://docs.docker.com/ai/sandboxes/get-started/).
 - A Docker account. Sign in with `sbx login`.
 - A GitHub account, to open the tunnel.
+- The `gh` CLI, signed in with `gh auth login`, to give the sandbox a push token.
 - A Claude subscription, not an API key.
 
 ## Install
 
-Clone the repo and build the image:
+- Clone the repository and build the image:
 
-```bash
-git clone https://github.com/lars20070/sbx-vscode
-cd sbx-vscode
-./sbx-vscode-build
-```
+  ```bash
+  git clone https://github.com/lars20070/sbx-vscode
+  cd sbx-vscode
+  ./sbx-vscode-build
+  ```
 
-The script builds the image on your Mac and loads it as an `sbx` template. It pulls nothing from a registry. Run it again each time you change the `Dockerfile`.
+  The script builds the image on your Mac and loads it as an `sbx` template. It pulls nothing from a registry. Run it again each time you change the `Dockerfile`.
+
+- Give the sandbox a GitHub token once. The sandbox blocks SSH (port 22), so the image routes GitHub over HTTPS. The token lets it push:
+
+  ```bash
+  gh auth token | sbx secret set -g github
+  ```
 
 ## Use
 
@@ -43,11 +50,3 @@ The script builds the image on your Mac and loads it as an `sbx` template. It pu
 - On your Mac, open VS Code and add the [Remote - Tunnels](https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-server) extension. Sign in with the same GitHub account, then connect to the tunnel. The tunnel is named `claude-<project>` — for example, `/path/to/repo` becomes `claude-repo`.
 
 - Open the Claude Code panel and sign in to your Claude account.
-
-- Push to GitHub from inside the sandbox. The sandbox blocks SSH (port 22), so the image routes GitHub over HTTPS ([image/Dockerfile](image/Dockerfile)). Give the sandbox a token once, on your Mac:
-
-  ```bash
-  sbx secret set -g github -t "$(gh auth token)"
-  ```
-
-  This needs `gh` installed and signed in (`gh auth login`). Public repositories fetch anonymously; you need the token only to push. It lets the sandbox push to every repository the token can reach, so for untrusted code use a token limited to specific repositories.
