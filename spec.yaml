@@ -11,56 +11,13 @@ sandbox:
     run: ["code", "tunnel"]
 
 network:
-  # Egress is deny-by-default; only the hosts below are reachable from inside the
-  # sandbox. Trim any group you don't need to keep the attack surface small.
+  # We assume a balanced network policy is in place (default). Cannot be set in the spec.yaml file.
+  # sbx policy init balanced
   allowedDomains:
-    # --- Claude / Anthropic: Claude Code sign-in, API, downloads (required) ---
-    - "claude.com:443"
-    - "claude.ai:443"
-    - "platform.claude.com:443"
-    - "downloads.claude.ai:443"
-    - "api.anthropic.com:443"
-
-    # --- VS Code: tunnel service, editor downloads, CDN (required) ---
-    - "go.microsoft.com:443" # update/tunnel redirects
-    - "vscode.download.prss.microsoft.com:443"
-    - "main.vscode-cdn.net:443"
-
-    # --- VS Code Marketplace: the anthropic.claude-code extension gallery ---
-    - "anthropic.gallery.vsassets.io:443"
-    - "anthropic.gallerycdn.vsassets.io:443"
-
-    # --- Git / GitHub: clone & push (HTTPS), gh CLI, release assets, GHCR ---
-    - "github.com:443"
-    - "*.github.com:443" # api.github.com, codeload.github.com, gist
-    - "*.githubusercontent.com:443" # raw, objects (release assets), pkg-containers
-    - "ghcr.io:443"
-
-    # --- OS packages: apt on Ubuntu arm64 is served over HTTP from ports.ubuntu.com ---
-    - "ports.ubuntu.com:80"
-    - "packages.microsoft.com:443" # VS Code apt channel (preconfigured in the image)
-    - "download.docker.com:443" # Docker CE apt channel (preconfigured in the image)
-
-    # --- Python: pip / uv / poetry ---
-    - "pypi.org:443"
-    - "files.pythonhosted.org:443" # wheels & sdists
-
-    # --- TypeScript / Node: npm / pnpm / yarn, and node installers ---
-    - "registry.npmjs.org:443"
-    - "registry.yarnpkg.com:443"
-    - "nodejs.org:443"
-
-    # --- DevOps: container registries ---
-    - "*.docker.io:443" # Docker Hub (registry-1, auth)
-    - "production.cloudflare.docker.com:443" # Docker Hub blob CDN
-    - "quay.io:443"
-    - "*.quay.io:443"
-    - "registry.k8s.io:443"
-    - "*.pkg.dev:443" # registry.k8s.io redirect targets (Artifact Registry)
-    - "pkgs.k8s.io:443" # kubectl / kubeadm apt repo
-    - "dl.k8s.io:443" # kubectl binaries
-
-    # --- DevOps: IaC & CLI tooling ---
-    - "releases.hashicorp.com:443" # terraform, vault, packer binaries
-    - "registry.terraform.io:443" # terraform providers & modules
-    - "get.helm.sh:443" # helm binary
+    # --- VS Code tunnel + editor + Marketplace (not in balanced) ---
+    - "claude.ai:443" # Claude Code sign-in (balanced has claude.com only)
+    - "go.microsoft.com:443" # tunnel / update redirects
+    - "vscode.download.prss.microsoft.com:443" # editor download
+    - "main.vscode-cdn.net:443" # editor CDN
+    - "anthropic.gallery.vsassets.io:443" # claude-code extension gallery
+    - "anthropic.gallerycdn.vsassets.io:443" # claude-code extension CDN
