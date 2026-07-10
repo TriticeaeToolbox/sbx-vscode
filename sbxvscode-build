@@ -1,8 +1,13 @@
 #! /usr/bin/env bash
 set -e
 
+# Temporary image archive
+TAR="sbx-vscode-arm64.tar"
+
 # Always operate from the kit directory so relative paths resolve
-cd "$(dirname "$(readlink -f "$0")")"
+SCRIPT_PATH="$(readlink -f "$0")"
+KIT_DIR="$(dirname "${SCRIPT_PATH}")"
+cd "${KIT_DIR}"
 
 # Build the image
 docker rmi -f sbx-vscode-arm64:latest 2>/dev/null || true
@@ -10,10 +15,11 @@ docker build --platform linux/arm64 -t sbx-vscode-arm64 ./image
 # docker image ls
 
 # Save the image to tar file
-rm -f sbx-vscode-arm64.tar
-docker image save sbx-vscode-arm64 -o sbx-vscode-arm64.tar
+rm -f "${TAR}"
+docker image save sbx-vscode-arm64 -o "${TAR}"
 
 # Load the image as sbx template
 sbx template rm docker.io/library/sbx-vscode-arm64:latest 2>/dev/null || true
-sbx template load sbx-vscode-arm64.tar
+sbx template load "${TAR}"
+rm -f "${TAR}"
 # sbx template ls
