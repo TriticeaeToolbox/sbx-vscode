@@ -3,20 +3,20 @@ set -uo pipefail
 
 #
 # START A VSCODE DOCKER SANDBOX
-# ./sbx-vscode [-d] [project_directory]
+# ./sbxvscode [-d] [project_directory]
 # -d = flag to run detached / in background
 # project_directory = path to directory that will be mounted into the sandbox
 #
 # Examples
-# ./sbx-vscode                       start the sandbox and the VSCode tunnel in the current directory
-# ./sbx-vscode /path/to/files        start the sandbox and the VSCode tunnel in the specified directory
-# ./sbx-vscode -d                    start the sandbox in the current directory
-# ./sbx-vscode -d /path/to/files     start the sandbox in the specified directory
+# ./sbxvscode                       start the sandbox and the VSCode tunnel in the current directory
+# ./sbxvscode /path/to/files        start the sandbox and the VSCode tunnel in the specified directory
+# ./sbxvscode -d                    start the sandbox in the current directory
+# ./sbxvscode -d /path/to/files     start the sandbox in the specified directory
 #
 
 usage() {
 	cat <<'EOF'
-Usage: sbx-vscode [-d] [-h] [project_directory]
+Usage: sbxvscode [-d] [-h] [project_directory]
   -d                 create the sandbox without starting the VSCode tunnel
   -h                 show this help and exit
   project_directory  directory to mount into the sandbox (default: current directory)

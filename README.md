@@ -22,7 +22,7 @@ The kit runs your project in a walled-off Docker sandbox and opens a VS Code tun
   ```bash
   git clone https://github.com/lars20070/sbx-vscode
   cd sbx-vscode
-  ./sbx-vscode-build
+  ./sbxvscode-build
   ```
 
   The script builds the image on your Mac and loads it as an `sbx` template. It pulls nothing from a registry. Run it again each time you change the `Dockerfile`.
@@ -38,7 +38,7 @@ The kit runs your project in a walled-off Docker sandbox and opens a VS Code tun
 - Start the sandbox and open a tunnel for your project:
 
   ```bash
-  ./sbx-vscode /path/to/repo
+  ./sbxvscode /path/to/repo
   ```
 
 - Grant access to the server. The script prints a link and a code. Open the link and type the code:
